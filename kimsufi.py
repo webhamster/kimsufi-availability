@@ -90,8 +90,11 @@ def get_zone_name(zone):
 def get_servers(models):
     """Get the servers from the OVH API."""
 
-    r = requests.get(API_URL)
-    response = r.json()['answer']['availability']
+    r = requests.get(API_URL).json()
+    answer = r['answer']
+    if answer == None:
+        sys.exit(r['error']['message'])
+    response = answer['availability']
 
     search = REFERENCES
     if models:
